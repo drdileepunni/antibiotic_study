@@ -1,6 +1,7 @@
 # Folders
 data/*
 .DS_Store
+trash/*
 
 # History files
 .Rhistory
