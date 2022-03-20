@@ -4,6 +4,9 @@ library(table1)
 library(rvest)
 library(dplyr)
 
+source("./cleaning_data.R")
+source("./helper_functions.R")
+
 clean_abx_dataset <- function(all_antibiotics_path) {
 
     # Loading data
@@ -286,7 +289,7 @@ get_abx_related_details <- function(cleaned_abx_path) {
     }
 
     cat("\n==========================================================\n")
-    print("Usage of individual antibiotics wave wise: ")
+    print("USAGE OF COVID ANTIBIOTICS AMONG COVID PATIENTS!!")
 
     covid_antibiotics <- c('Remdesivir', 'Oseltamivir', 'Azithromycin', 'Ivermectin', 'Favipiravir', 
                            'Hydroxychloroquine', 'Cefotaxime')
@@ -303,6 +306,48 @@ get_abx_related_details <- function(cleaned_abx_path) {
         print(chisq.test(abx_covid_only_waves$wave, abx_covid_only_waves[[name]]))
         cat("\n==========================================================\n")
 
+    }
+    
+    cat("\n==========================================================\n")
+    print("USAGE OF ANTIBIOTICS GROUPS AMONG ALL PATIENTS!!")
+    
+    items <- c('abx_watch', 'abx_reserve', 'covid_specific_abx')
+    
+    for (item in items) {
+      
+      print("\n==========================================================\n")
+      print(item)
+      
+      tab <- table(abx_covid_only_waves$wave, abx_covid_only_waves[[item]])
+      
+      first_wave_percent <- round((tab[3]/(tab[3]+tab[1]))*100, 2)
+      second_wave_percent <- round((tab[4]/(tab[4]+tab[2]))*100, 2)
+      
+      print(glue("{item} use in first wave: {first_wave_percent}"))
+      print(glue("{item} use in second wave: {second_wave_percent}"))
+      print(glue("Change is: {second_wave_percent - first_wave_percent}"))
+      
+      print(chisq.test(abx_covid_only_waves$wave, abx_covid_only_waves[[item]]))
+      
+    }
+    
+    cat("\n==========================================================\n")
+    print("USE OF COVID ANTIBIOTICS AMONG ALL PATIENTS!!")
+    
+    for (antibiotic in covid_antibiotics) {
+      
+      cat("\n==========================================================\n")
+      print(antibiotic)
+      
+      tab <- table(abx_covid_only_waves$wave, abx_covid_only_waves[[antibiotic]])
+      first_wave_percent <- round((tab[3]/(tab[3]+tab[1]))*100, 2)
+      second_wave_percent <- round((tab[4]/(tab[4]+tab[2]))*100, 2)
+      print(glue("{antibiotic} use in first wave: {first_wave_percent}"))
+      print(glue("{antibiotic} use in second wave: {second_wave_percent}"))
+      print(glue("Change is: {second_wave_percent - first_wave_percent}"))
+      
+      print(chisq.test(abx_covid_only_waves$wave, abx_covid_only_waves[[antibiotic]]))
+      
     }
     
 }
