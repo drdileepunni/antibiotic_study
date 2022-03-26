@@ -351,3 +351,40 @@ get_abx_related_details <- function(cleaned_abx_path) {
     }
     
 }
+
+generate_forest_plots <- function(cleaned_abx_path) {
+
+    abx_cleaned <- read.csv(cleaned_abx_path)
+
+    # Subsetting for forest plots
+    abx_df_morethan_50 <- abx_cleaned[abx_cleaned$name %in% more_than_50,]
+
+    abx_df_northwest <- abx_df_morethan_50[abx_df_morethan_50$region=="northwest",]
+    abx_df_east <- abx_df_morethan_50[abx_df_morethan_50$region=="east",]
+    abx_df_south <- abx_df_morethan_50[abx_df_morethan_50$region=="south",]
+
+    abx_df_wave1 <- abx_df_morethan_50[abx_df_morethan_50$wave==1,]
+    abx_df_wave2 <- abx_df_morethan_50[abx_df_morethan_50$wave==2,]
+
+    # Creating df for forest plots
+    forest_50 <- get_forest_df(abx_df_morethan_50)
+
+    forest_northwest <- get_forest_df(abx_df_northwest)
+    forest_east <- get_forest_df(abx_df_east)
+    forest_south <- get_forest_df(abx_df_south)
+
+    forest_wave1 <- get_forest_df(abx_df_wave1)
+    forest_wave2 <- get_forest_df(abx_df_wave2)
+
+    save_forest_plot(forest_50, "forest_50")
+    save_forest_plot(forest_northwest, "forest_northwest")
+    save_forest_plot(forest_east, "forest_east")
+    save_forest_plot(forest_south, "forest_south")
+    save_forest_plot(forest_wave1, "forest_wave1")
+    save_forest_plot(forest_wave2, "forest_wave2")
+    
+    cat("\n==========================================================\n")
+    
+    print("All forrest plots saved to data folder !!!")
+    
+}

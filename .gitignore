@@ -2,6 +2,8 @@
 data/*
 .DS_Store
 trash/*
+.ipynb_checkpoints/
+*.ipynb
 
 # History files
 .Rhistory

@@ -1,3 +1,5 @@
+library(meta)
+
 source("./cleaning_data.R")
 
 ##### DEFINING FUNCTIONS to replace bad names #####
@@ -66,4 +68,45 @@ get_forest_df <- function(df) {
   names(df_or)[names(df_or) == '1'] <- 'covid'
   return(df_or)
   
+}
+
+save_forest_plot <- function(forest_df, name) {
+
+    m.bin <- metabin(covid,
+                     covid_total,
+                     non_covid,
+                     non_covid_total,
+                     data = forest_df,
+                     studlab = paste(rownames(forest_df)),
+                     comb.fixed = FALSE,
+                     comb.random = TRUE,
+                     method.tau = "DL",
+                     hakn = TRUE,
+                     prediction = TRUE,
+                     incr = 0.1,
+                     sm = "OR")
+
+    h <- 1080*4
+    png(file = glue("data/{name}.png"), height=2/3*h, width=h, res=300)
+    forest_plot <- forest.meta(m.bin,
+                                sortvar= TE,
+                                xlim = c(0.01,5),
+                                rightlabs = c("OR","95% CI","weight"),
+                                leftlabs = c("Antibiotic", "Antibiotic use","Total","Antibiotic use","Total"),
+                                lab.e = "COVID Group",
+                                pooled.totals = TRUE,
+                                #smlab = "",
+                                squaresize = 0.5,
+                                text.random = "Overall effect",
+                                print.tau2 = TRUE,
+                                col.diamond = "blue",
+                                col.diamond.lines = "black",
+                                col.predict = "black",
+                                #print.I2.ci = TRUE
+                                digits.tau2 = 2,
+                                digits.sd = 2,
+                                plotwidth = "5cm"
+    )
+    dev.off() 
+    
 }
