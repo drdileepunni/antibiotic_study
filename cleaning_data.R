@@ -46,7 +46,7 @@ more_than_50 <- c("Acyclovir", "Amikacin", "Amoxicillin/Clavulanic Acid", "Ampho
                   "Ceftriaxone", "Ceftriaxone/Tazobactam", "Cefuroxime",
                   "Ciprofloxacin", "Clarithromycin", "Clindamycin","Favipiravir", "Fluconazole",
                   "Imipenem/cilastatin","Levofloxacin", "Linezolid", "Meropenem","Ivermectin",
-                  "Moxifloxacin","Nitrofurantoin","Oseltamivir","Piperacillin/Tazobactam", "Polymyxin", "Remdesivir", "Rifaximin", "Teicoplanin", "Tigecycline","Vancomycin", "Voriconazole")
+                  "Moxifloxacin","Nitrofurantoin","Oseltamivir","Piperacillin/Tazobactam", "Polymyxin", "Remdesivir", "Rifaximin", "Teicoplanin", "Tigecycline","Vancomycin", "Voriconazole", "Hydroxychloroquine")
 
 access_group <- c('Amikacin','Amoxicillin','Amoxicillin/clavulanic acid', 'Ampicillin','Ampicillin sulbactam','Bacampicillin','Benzathine benzylpenicillin',	
                   'Benzylpenicillin','Cefacetrile','Cefadroxil','Cefalexin','Cefalotin','Cefapirin','Cefatrizine','Cefazedone','Cefazolin','Cefradine','Cefroxadine',
