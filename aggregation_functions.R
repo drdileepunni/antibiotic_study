@@ -142,11 +142,16 @@ get_admission_related_details <- function(all_admissions_path) {
     covid_division <- table(adm_df$covid)
     total_hospitals <- length(unique(adm_df$name.2))
     received_at_least_one_abx <- sum(adm_df$received_abx, na.rm=TRUE)
-
-    covid_division_wavewise <- table(adm_df$covid, adm_df$wave)
+    
+    adm_df_only_waves <- filter(adm_df, ((adm_df$wave==1) | adm_df$wave==2))
+    covid_division_wavewise <- table(adm_df_only_waves$covid, adm_df_only_waves$wave)
+    intervening_period_adm_count <- count(filter(adm_df, adm_df$wave==1.5))[1,1]
+    post_second_wave_adm_count <- count(filter(adm_df, adm_df$wave==2.5))[1,1]
 
     print(glue("Total admissions: {total_admissions}"))
     print(glue("Total admissions that received at least one antibiotic: {received_at_least_one_abx}"))
+    print(glue("Intervening period admission coung: {intervening_period_adm_count}"))
+    print(glue("Post second wave admission coung: {post_second_wave_adm_count}"))
 
     cat("\n==========================================================\n")
 
@@ -165,13 +170,11 @@ get_admission_related_details <- function(all_admissions_path) {
 
     cat("\n==========================================================\n")
 
-    first_wave_total_adm <- covid_division_wavewise[4] + covid_division_wavewise[5] + covid_division_wavewise[6]
-    second_wave_total_adm <- covid_division_wavewise[7] + covid_division_wavewise[8] + covid_division_wavewise[9]
-    not_first_or_second_total_adm <- covid_division_wavewise[1] + covid_division_wavewise[2] + covid_division_wavewise[3]
+    second_wave_total_adm <- covid_division_wavewise[4] + covid_division_wavewise[5] + covid_division_wavewise[6]
+    first_wave_total_adm <- covid_division_wavewise[1] + covid_division_wavewise[2] + covid_division_wavewise[3]
 
     print(glue("Total admissions in first wave: {first_wave_total_adm}"))
     print(glue("Total admissions in second wave: {second_wave_total_adm}"))
-    print(glue("Total admissions in neither waves: {not_first_or_second_total_adm}"))
 
     cat("\n==========================================================\n")
 
@@ -200,11 +203,15 @@ get_admission_related_details <- function(all_admissions_path) {
 
     tab <- table(first_wave_adm_df$covid, first_wave_adm_df$received_abx)
     proportion_received_abx_first_wave <- round(100-((tab[2] + tab[3])/(tab[5] + tab[6])*100), 1)
-    print(glue("Proportion of admissions that received antibiotics during first wave: {proportion_received_abx_first_wave}"))
+    print(glue("Proportion of covid admissions that received antibiotics during first wave: {proportion_received_abx_first_wave}"))
 
     tab <- table(second_wave_adm_df$covid, second_wave_adm_df$received_abx)
     proportion_received_abx_second_wave <- round(100-((tab[2] + tab[3])/(tab[5] + tab[6])*100), 1)
-    print(glue("Proportion of admissions that received antibiotics during second wave: {proportion_received_abx_second_wave}"))
+    print(glue("Proportion of covid admissions that received antibiotics during second wave: {proportion_received_abx_second_wave}"))
+    
+    tab <- table(adm_df$covid, adm_df$received_abx)
+    proportion_all_covid_received_abx <- round((tab[5]+ tab[6])/(tab[2]+ tab[3]+tab[5]+tab[6])*100, 1)
+    print(glue("Proportion of covid admissions that received antibiotics regardless of waves: {proportion_all_covid_received_abx}"))
 
 }
 
