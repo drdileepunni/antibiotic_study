@@ -32,5 +32,6 @@ cleaned_abx_path <- clean_abx_dataset(all_antibiotics_path)
 get_summary_table(cleaned_abx_path)
 get_admission_related_details(all_admissions_path)
 get_abx_related_details(cleaned_abx_path)
+generate_forest_plots(cleaned_abx_path)
 ```
 * At the end of the runs, your data folder will all the interim datasets in it. abx_df_cleaned.csv is the dataset to use for UVA, MVA and making plots.
